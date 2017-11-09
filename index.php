@@ -6,8 +6,8 @@ define("DS", '/');
 
 use Classes\Monitor;
 
-//$monitor = new Monitor('internal-mysql-database');
-//$monitor->init()->runCheck();
+$monitor = new Monitor();
+$monitor->init()->healthCheck();
 
 //$monitor = new Monitor('internal-redis-cache');
 //$monitor->init()->runCheck();
@@ -21,5 +21,5 @@ use Classes\Monitor;
 //$monitor = new Monitor('internal-nfs-media');
 //$monitor->init()->runCheck();
 
-$monitor = new Monitor('internal-solr-search');
-$monitor->init()->runCheck();
+//$monitor = new Monitor('internal-solr-search');
+//$monitor->init()->runCheck();
