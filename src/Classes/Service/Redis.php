@@ -31,7 +31,8 @@ class Redis extends AbstractService implements InterfaceService
     public function runCheck()
     {
         $this->config->setServiceCode($this->serviceCode);
-        $config = $this->config->getConfigurations();
+        //$config = $this->config->getConfigurations();
+        $config = $this->getConfig()->getConfigReader()->getConfigurations();
         if ($config) {
             $output = $this->checkConnection($config);
             return $this->validateResponse($output);

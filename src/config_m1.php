@@ -38,18 +38,18 @@ return [
             ]
         ],
         'internal-memcache-session' => [
-            'service_class' => "\\Classes\\Helper\\MagentoConfig",
+            'service_class' => "\\Classes\\Service\\Memcache",
             'connection' => [
-                'path' => 'global/session_save',
+                'path' => 'global/session_save'
             ]
         ],
         'internal-nfs-media' => [
             'service_class' => "\\Classes\\Service\\DirCheck",
-            'dir_path' => '/media',
+            'dir_path' => '/media'
         ],
         'internal-nfs-var' => [
             'service_class' => "\\Classes\\Service\\DirCheck",
-            'dir_path' => '/var',
+            'dir_path' => '/var'
         ],
         'internal-solr-search' => [
             'service_class' => "\\Classes\\Service\\Solr",

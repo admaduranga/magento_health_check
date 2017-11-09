@@ -13,30 +13,26 @@ use Classes\Generic\InterfaceService;
 
 class DirCheck extends AbstractService implements InterfaceService
 {
-    /**
-     * @var string
-     */
-    protected $serviceCode = 'internal-redis-cache';
-
-    /**
-     * THis is a test function
-     * @var \Classes\Helper\MagentoConfig
-     */
-    protected $config;
-
-    public function init()
-    {
-        //
-    }
+//    /**
+//     * @var string
+//     */
+//    protected $serviceCode = 'internal-redis-cache';
+//
+//    /**
+//     * THis is a test function
+//     * @var \Classes\Helper\MagentoConfig
+//     */
+//    protected $config;
+//
+//    public function init()
+//    {
+//        //
+//    }
 
     public function runCheck()
     {
-        //$this->config->setServiceCode($this->serviceCode);
-        $env = $this->env;
-        $docRoot = $env->getConfigValue('project/doc_root');
-        $framework = $env->getConfigValue('project/framework');
-        $path = $env->getConfigValue("service/$this->serviceCode/$framework/dir_path");
-
+        $docRoot = $this->getConfig()->getConfigValue('project/doc_root');
+        $path = $this->getConfig()->getConfigValue("service/$this->serviceCode/dir_path");
         $dir_path = $docRoot.$path;
 
         //$config = $this->config->getConfigurations();

@@ -13,31 +13,32 @@ use Classes\Generic\InterfaceService;
 
 class Memcache extends AbstractService implements InterfaceService
 {
-    /**
-     * @var string
-     */
-    protected $serviceCode = 'internal-memcache-session';
-
-    /**
-     * THis is a test function
-     * @var \Classes\Helper\MagentoConfig
-     */
-    protected $config;
-
-    /**
-     * MySql constructor.
-     * @param \Classes\Helper\MagentoConfig $config
-     */
-    public function __construct(\Classes\Generic\AbstractHelper $config)
-    {
-        $this->config = $config;
-    }
+//    /**
+//     * @var string
+//     */
+//    protected $serviceCode = 'internal-memcache-session';
+//
+//    /**
+//     * THis is a test function
+//     * @var \Classes\Helper\MagentoConfig
+//     */
+//    protected $config;
+//
+//    /**
+//     * MySql constructor.
+//     * @param \Classes\Helper\MagentoConfig $config
+//     */
+//    public function __construct(\Classes\Generic\AbstractHelper $config)
+//    {
+//        $this->config = $config;
+//    }
 
 
     public function runCheck()
     {
-        $this->config->setServiceCode($this->serviceCode);
-        $config = $this->config->getConfigurations();
+        //$this->config->setServiceCode($this->serviceCode);
+        //$config = $this->config->getConfigurations();
+        $config = $this->getConfig()->getConfigReader()->getConfigurations();
         if ($config) {
             if (isset($config->scalar) &&  $config->scalar == 'files') {
                $output = false;
