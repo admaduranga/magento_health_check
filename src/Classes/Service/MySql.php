@@ -21,7 +21,10 @@ class MySql extends AbstractService implements InterfaceService
      */
     public function runCheck()
     {
-        $config = $this->getConfig()->getConfigReader()->getConfigurations();
+        $config = $this->getConfig()
+            ->getConfigReader()
+            ->getConfigurations($this->getServiceCode());
+
         if ($config) {
             $output = $this->checkConnection($config);
             return $this->validateResponse($output);

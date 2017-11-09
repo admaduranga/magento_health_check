@@ -17,7 +17,7 @@ class Magento extends AbstractHelper
 
 
     public function __construct(
-        \Classes\Generic\AbstractHelper $config
+        \Classes\Helper\Config $config
     )
     {
         $this->parser = new \Classes\Helper\XmlParser();
@@ -28,15 +28,14 @@ class Magento extends AbstractHelper
     {
         return $this->config;
     }
-    public function getConfigurations(){
+    public function getConfigurations($serviceCode){
 
-        return (object) $this->readSettings();
+        return (object) $this->readSettings($serviceCode);
     }
 
-    public function readSettings()
+    public function readSettings($serviceCode)
     {
         $env = $this->config;
-        $serviceCode = $this->getConfig()->getServiceCode();
         $docRoot = $env->getConfigValue('project/doc_root');
         $framework = $env->getConfigValue('project/framework');
         $configFile = $env->getConfigValue('project/local_config');

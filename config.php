@@ -11,31 +11,31 @@ return [
         [
             'internal-mysql-database' =>
                 [
-                    'active' => 1
+                    'status' => 1
                 ],
             'internal-redis-cache' =>
                 [
-                    'active' => 0
+                    'status' => 0
                 ],
             'internal-redis-fpc' =>
                 [
-                    'active' => 0
+                    'status' => 0
                 ],
             'internal-memcache-session' =>
                 [
-                    'active' => 0
+                    'status' => 0
                 ],
             'internal-nfs-media' =>
                 [
-                    'active' => 1
+                    'status' => 1
                 ],
             'internal-nfs-var' =>
                 [
-                    'active' => 1
+                    'status' => 1
                 ],
             'internal-solr-search' =>
                 [
-                    'active' => 1
+                    'status' => 0
                 ],
         ]
 ];

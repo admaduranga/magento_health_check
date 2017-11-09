@@ -7,7 +7,9 @@ define("DS", '/');
 use Classes\Monitor;
 
 $monitor = new Monitor();
-$monitor->init()->healthCheck();
+echo print_r($monitor->init()->healthCheck(), true);
+
+
 
 //$monitor = new Monitor('internal-redis-cache');
 //$monitor->init()->runCheck();

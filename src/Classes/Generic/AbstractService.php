@@ -10,7 +10,7 @@ class AbstractService
      * DirCheck constructor.
      * @param \Classes\Generic\AbstractHelper|null $env
      */
-    public function __construct($serviceCode, \Classes\Generic\AbstractHelper $config=null)
+    public function __construct($serviceCode, \Classes\Helper\Config $config=null)
     {
         $this->setConfig($config);
         $this->setServiceCode($serviceCode);

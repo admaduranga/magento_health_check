@@ -6,22 +6,13 @@ class Monitor
     protected $service;
     protected $env;
     protected $resultDir = 'results';
-    protected $serviceCode = null;
     protected $config;
-
-    public function __construct($serviceCode)
-    {
-        $this->setServiceCode($serviceCode);
-    }
 
     public function init($config = false)
     {
-        if (!$config) {
-            $config = new Helper\Config();
-            $this->setConfig($config->init());
-            $config->setServiceCode($this->getServiceCode());
-        }
-        $this->initService();
+        $this->config = $config ? $config : new Helper\Config();
+        $this->config->init();
+        //$this->initService();
         return $this;
     }
 
@@ -44,14 +35,6 @@ class Monitor
         }
     }
 
-    /**
-     * Getter
-     * @return mixed
-     */
-    public function getService()
-    {
-        return $this->service;
-    }
 
     /**
      * Where to write the output file
@@ -69,22 +52,6 @@ class Monitor
     public function getOutputFileName()
     {
         return $this->getService()->getServiceCode() . '.txt';
-    }
-
-    /**
-     * @param $code
-     */
-    public function setServiceCode($code)
-    {
-        $this->serviceCode = $code;
-    }
-
-    /**
-     * @return null
-     */
-    public function getServiceCode()
-    {
-        return $this->serviceCode;
     }
 
     public function setConfig($config)
@@ -106,24 +73,47 @@ class Monitor
         $this->logResponse($response, $this->service);
     }
 
-    public function initService()
+    /**
+     * @param $serviceCode
+     * @return \Classes\Generic\AbstractService
+     * @throws \Exception
+     */
+    public function initService($serviceCode)
     {
+        //$service = false;
         //
         //$framework = $env->getConfigValue('project/framework');
-        $serviceClass = $this->getConfig()->getConfigValue("service/$this->serviceCode/service_class");
-        if ($serviceClass) {
-            $service = new $serviceClass($this->getServiceCode(), $this->getConfig());
-            if ($service instanceof \Classes\Generic\AbstractService) {
-                $this->service = $service;
-            } else {
-                throw new \Exception('No Service Class Found. Please Specify in the Settings');
+        //$serviceClass = $this->getConfig()->getConfigValue("service/$this->serviceCode/service_class");
+        try {
+            $serviceClass = $this->getConfig()->asObject()->service->$serviceCode->service_class;
+            if ($serviceClass) {
+                $service = new $serviceClass($serviceCode, $this->getConfig());
+                if (!$service instanceof \Classes\Generic\AbstractService) {
+                    throw new \Exception('No Service Class Found. Please Specify in the Settings');
+                }
             }
+        } catch (\Exception $e) {
+            throw new \Exception('Cannot initiate Service:'.$e->getMessage());
         }
-        return $this->service;
+
+        /** var $service \Classes\Generic\AbstractService */
+        return $service;
     }
 
     public function healthCheck()
     {
-        $config = $this->getConfig();
+        $result = [];
+        $config = $this->getConfig()->asObject();
+
+        if (!$config) {
+            throw new \Exception('Invalid configuration found');
+        }
+
+        foreach ($config->service as $code => $service) {
+            if ($service->status) {
+                $result[$code] = $this->initService($code)->runCheck();
+            }
+        }
+        return $result;
     }
 }
