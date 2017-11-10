@@ -13,8 +13,8 @@ class Monitor
      */
     public function init($config = false)
     {
-        $this->config = $config ? $config : new Helper\Config();
-        $this->config->init();
+        $this->config = new Helper\Config();
+        $this->config->init($config);
         return $this;
     }
 
@@ -71,7 +71,7 @@ class Monitor
 
             foreach ($config->service as $code => $service) {
                 if ($service->status) {
-                    $result[$code] = $this->initService($code)->runCheck();
+                    $result[$code] = $this->initService($code)->checkService();
                 }
             }
             return $result;

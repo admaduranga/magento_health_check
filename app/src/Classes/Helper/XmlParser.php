@@ -12,6 +12,7 @@ use Classes\Generic\AbstractHelper;
 class XmlParser extends AbstractHelper
 {
     protected $config = null;
+    protected $loaded = false;
     
     public function __construct($path='')
     {
@@ -31,6 +32,7 @@ class XmlParser extends AbstractHelper
                 try {
                     $xml = new \SimpleXMLElement($path, NULL, TRUE);
                     $this->config = $xml;
+                    $this->loaded = true;
                 } catch (\Exception $e) {
                     //TEMP Log Message
                     //@TODO: Change this temp log messages
@@ -43,7 +45,13 @@ class XmlParser extends AbstractHelper
         }
         return $this;
     }
-    public function getConfigValue($string = '')
+
+    public function isLoaded()
+    {
+        return $this->loaded;
+    }
+
+    public function getXpathValue($string = '', $map=[])
     {
         $result = [];
         try {
@@ -52,13 +60,16 @@ class XmlParser extends AbstractHelper
 
         }
         $config = isset($part[0]) ? $part[0] : false;
-        if (isset($config[0])) {
-            return $config[0]->__toString();
-        }
 
         if (!empty($config)) {
             foreach($config as $p => $v) {
-                $result[$p] =$v->__toString();
+                if ($map) {
+                    if (isset($map[$p])) {
+                        $result[$p] = $v->__toString();
+                    }
+                } else {
+                    $result[$p] =$v->__toString();
+                }
             }
             return $result;
         } else {

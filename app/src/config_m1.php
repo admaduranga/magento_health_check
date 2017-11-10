@@ -40,7 +40,11 @@ return [
         'internal-memcache-session' => [
             'service_class' => "\\Classes\\Service\\Memcache",
             'connection' => [
-                'path' => 'global/session_save'
+                'path' => 'global',
+                'map' => [
+                    'session_save' => 'session_save',
+                    'session_save_path' => 'session_save_path'
+                ]
             ]
         ],
         'internal-nfs-media' => [

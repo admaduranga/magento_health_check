@@ -14,25 +14,23 @@ class Config
     protected $config = null;
     protected $configReader;
 
-    public function init()
+
+    public function init($settings)
     {
         $env = [];
         // ** Merge if local settings are available
-        if (file_exists(DOC_ROOT . 'config.php')) {
-            $settings = include DOC_ROOT . 'config.php';
-            if (!empty($settings['project']['main_config'])) {
-                $mainConfigFile = DOC_ROOT . 'src' . DS . $settings['project']['main_config'];
-                if (file_exists($mainConfigFile)) {
-                    $env = include $mainConfigFile;
-                } else {
-                    echo '***************'.$mainConfigFile;
-                    throw new \Exception('main_config file is invalid');
-                }
+        if (!empty($settings['project']['main_config'])) {
+            $mainConfigFile = DOC_ROOT . 'src' . DS . $settings['project']['main_config'];
+            echo $mainConfigFile;exit;
+            if (file_exists($mainConfigFile)) {
+                $env = include $mainConfigFile;
+            } else {
+                throw new \Exception('main_config file is invalid');
             }
+        }
 
-            if ($settings) {
-                $env = array_replace_recursive($settings, $env);
-            }
+        if ($settings) {
+            $env = array_replace_recursive($settings, $env);
         }
 
         $this->setConfig($env);
@@ -49,18 +47,6 @@ class Config
     }
 
 
-
-//    public function load($path)
-//    {
-//        $env = '';
-//        if (!empty($path)) {
-//            if (file_exists($path)) {
-//                $env = include $path;
-//            }
-//        }
-//        $this->config = $env;
-//        return $this;
-//    }
     public function getConfigValue($string = '')
     {
         $result = $this->config;

@@ -36,19 +36,21 @@ class Magento extends AbstractHelper
 
     protected function readSettings($serviceCode)
     {
-        $env = $this->config;
-        $docRoot = $env->getConfigValue('project/doc_root');
-        $framework = $env->getConfigValue('project/framework');
-        $configFile = $env->getConfigValue('project/local_config');
-        $parser = $this->parser->load($docRoot.'/'.$configFile);
-        $path = $env->getConfigValue("service/$serviceCode/connection/path");
-        $map = $env->getConfigValue("service/$serviceCode/connection/map");
-        $result = $parser->getConfigValue($path);
-        if ($map) {
-            $result = $this->mapSettings($result, $map);
-        } else {
-
+        $result = [];
+        try {
+            $config = $this->getConfig()->asObject();
+            $parser = $this->parser->load($config->project->doc_root.'/'.$config->project->local_config);
+            if (!$parser->isLoaded()) {
+                throw new \Exception('Invalid Configuration');
+            }
+            $result = $parser->getXpathValue(
+                $config->service->$serviceCode->connection->path,
+                (array) $config->service->$serviceCode->connection->map
+            );
+        } catch (\Exception $e) {
+            throw new \Exception('Invalid Configuration');
         }
+
         return $result;
     }
 

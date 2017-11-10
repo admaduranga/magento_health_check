@@ -9,33 +9,12 @@ return [
     ],
     'service' =>
         [
-            'internal-mysql-database' =>
-                [
-                    'status' => 0
-                ],
-            'internal-redis-cache' =>
-                [
-                    'status' => 0
-                ],
-            'internal-redis-fpc' =>
-                [
-                    'status' => 0
-                ],
-            'internal-memcache-session' =>
-                [
-                    'status' => 1
-                ],
-            'internal-nfs-media' =>
-                [
-                    'status' => 0
-                ],
-            'internal-nfs-var' =>
-                [
-                    'status' => 0
-                ],
-            'internal-solr-search' =>
-                [
-                    'status' => 0
-                ],
+            'internal-mysql-database'   => ['status' => 1],
+            'internal-redis-cache'      => ['status' => 1],
+            'internal-redis-fpc'        => ['status' => 1],
+            'internal-memcache-session' => ['status' => 1],
+            'internal-nfs-media'        => ['status' => 1],
+            'internal-nfs-var'          => ['status' => 1],
+            'internal-solr-search'      => ['status' => 0],
         ]
 ];
