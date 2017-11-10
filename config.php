@@ -11,7 +11,7 @@ return [
         [
             'internal-mysql-database' =>
                 [
-                    'status' => 1
+                    'status' => 0
                 ],
             'internal-redis-cache' =>
                 [
@@ -23,15 +23,15 @@ return [
                 ],
             'internal-memcache-session' =>
                 [
-                    'status' => 0
+                    'status' => 1
                 ],
             'internal-nfs-media' =>
                 [
-                    'status' => 1
+                    'status' => 0
                 ],
             'internal-nfs-var' =>
                 [
-                    'status' => 1
+                    'status' => 0
                 ],
             'internal-solr-search' =>
                 [

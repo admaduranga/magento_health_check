@@ -28,12 +28,13 @@ class Magento extends AbstractHelper
     {
         return $this->config;
     }
-    public function getConfigurations($serviceCode){
 
+    public function getConfigurations($serviceCode)
+    {
         return (object) $this->readSettings($serviceCode);
     }
 
-    public function readSettings($serviceCode)
+    protected function readSettings($serviceCode)
     {
         $env = $this->config;
         $docRoot = $env->getConfigValue('project/doc_root');
@@ -45,6 +46,8 @@ class Magento extends AbstractHelper
         $result = $parser->getConfigValue($path);
         if ($map) {
             $result = $this->mapSettings($result, $map);
+        } else {
+
         }
         return $result;
     }

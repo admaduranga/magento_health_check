@@ -52,6 +52,10 @@ class XmlParser extends AbstractHelper
 
         }
         $config = isset($part[0]) ? $part[0] : false;
+        if (isset($config[0])) {
+            return $config[0]->__toString();
+        }
+
         if (!empty($config)) {
             foreach($config as $p => $v) {
                 $result[$p] =$v->__toString();

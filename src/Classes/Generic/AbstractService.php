@@ -6,16 +6,17 @@ class AbstractService
     protected $env;
     protected $config;
     protected $framework;
+
     /**
-     * DirCheck constructor.
-     * @param \Classes\Generic\AbstractHelper|null $env
+     * AbstractService constructor.
+     * @param $serviceCode
+     * @param \Classes\Helper\Config|null $config
      */
     public function __construct($serviceCode, \Classes\Helper\Config $config=null)
     {
         $this->setConfig($config);
         $this->setServiceCode($serviceCode);
     }
-
 
     /**
      * Validate the response to determine service is up and running
@@ -40,14 +41,6 @@ class AbstractService
         $this->serviceCode = $code;
     }
 
-    public function getFramework(){
-        return $this->framework;
-    }
-    public function setFramework($code) {
-        $this->framework = $code;
-    }
-
-
     public function failProcess()
     {
         echo "\nProcess Cannot Continue";
@@ -64,11 +57,6 @@ class AbstractService
         return $this->env;
     }
 
-//    public function loadConfigClass()
-//    {
-//        $env = $this->env;
-//        $docRoot = $env->getConfigValue('project/doc_root');
-//    }
     public function setConfig($config)
     {
         $this->config = $config;

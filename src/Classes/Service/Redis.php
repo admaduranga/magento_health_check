@@ -13,26 +13,12 @@ use Classes\Generic\InterfaceService;
 
 class Redis extends AbstractService implements InterfaceService
 {
-    /**
-     * Initialize any configurations or  classes
-     * @return mixed
-     */
-    public function init()
-    {
-        // TODO: Implement init() method.
-        $framework = $this->env->getConfigValue('project/framework');
-        switch ($framework) {
-            case 'magento_1':
-                $this->setConfig(new \Classes\Helper\MagentoConfig($this->env));
-                break;
-        }
-    }
-
     public function runCheck()
     {
-        $this->config->setServiceCode($this->serviceCode);
-        //$config = $this->config->getConfigurations();
-        $config = $this->getConfig()->getConfigReader()->getConfigurations();
+        $config = $this->getConfig()
+            ->getConfigReader()
+            ->getConfigurations($this->getServiceCode());
+
         if ($config) {
             $output = $this->checkConnection($config);
             return $this->validateResponse($output);
