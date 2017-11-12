@@ -47,8 +47,9 @@ class MySql extends AbstractService implements InterfaceService
                 $host = $connection->host;
                 $user = $connection->username;
                 $pass = $connection->password;
+                $db = $connection->dbname;
             }
-            $output = shell_exec("mysql -h$host -u$user -p$pass -e\"show processlist\"");
+            $output = shell_exec("mysql -h$host -u$user -p$pass $db -e\"show processlist\"");
             return $output;
         } catch (\Exception $e) {
             echo 'Cannot Connect to Mysql';

@@ -20,8 +20,7 @@ class Config
         $env = [];
         // ** Merge if local settings are available
         if (!empty($settings['project']['main_config'])) {
-            $mainConfigFile = DOC_ROOT . 'src' . DS . $settings['project']['main_config'];
-            echo $mainConfigFile;exit;
+            $mainConfigFile = APP_ROOT . 'src' . DS . $settings['project']['main_config'];
             if (file_exists($mainConfigFile)) {
                 $env = include $mainConfigFile;
             } else {

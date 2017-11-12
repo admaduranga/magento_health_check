@@ -13,6 +13,5 @@ $phar["README.md"] = file_get_contents($srcRoot . "/README.md");
 //$phar["common.php"] = file_get_contents($srcRoot . "/common.php");
 $phar->buildFromDirectory($srcRoot);
 $phar->setStub($phar->createDefaultStub("index.php"));
-$phar->
 
 //copy($srcRoot . "/config.ini", $buildRoot . "/config.ini");

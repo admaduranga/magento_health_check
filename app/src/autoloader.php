@@ -10,8 +10,7 @@ function autoload($className)
         $fileName  = str_replace('\\', DIRECTORY_SEPARATOR, $namespace) . DIRECTORY_SEPARATOR;
     }
     $fileName .= str_replace('_', DIRECTORY_SEPARATOR, $className) . '.php';
-    echo $fileName."\r";
-
+    //echo $fileName."\r";
     require $fileName;
 }
 spl_autoload_register('autoload');
@@ -25,3 +24,17 @@ set_error_handler(function($errno, $errstr, $errfile, $errline, array $errcontex
     }
     throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
 });
+
+/**
+ * Handle any fatal errors
+ *
+ * @return void
+ */
+function fatalErrorHandler()
+{
+    $error = error_get_last();
+    if ($error !== null) {
+        echo json_encode($error);
+        http_response_code(500);
+    }
+}
