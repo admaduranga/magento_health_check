@@ -29,6 +29,7 @@ class DirCheck extends AbstractService implements InterfaceService
 
     public function checkConnection($dir_path)
     {
+        $output = false;
         try {
             $output = shell_exec("ls -al $dir_path");
             if ($output) {

@@ -69,10 +69,6 @@ class AbstractService
 
     public function checkService()
     {
-        try {
-            return $this->runCheck();
-        } catch (\Exception $e) {
-            echo 'DIL';
-        }
+        return $this->runCheck();
     }
 }

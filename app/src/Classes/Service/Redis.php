@@ -35,12 +35,13 @@ class Redis extends AbstractService implements InterfaceService
             $errstr = 'Server Socket Cannot Be Opened';
             $fp = @stream_socket_client("tcp://$config->server:$config->port", $errno, $errstr, 30);
             if (!$fp) {
-                echo "$errstr ($errno)<br />\n";
+                $output = false;
             } else {
                 $output = true;
             }
         } catch (\Exception $e) {
-            echo 'ERROR';
+            //echo 'ERROR';
+            throw new \Exception($e->getMessage());
         }
 
         return $output;

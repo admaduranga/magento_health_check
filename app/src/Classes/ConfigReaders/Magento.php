@@ -14,6 +14,7 @@ class Magento extends AbstractHelper
     protected $config;
     protected $parser;
     protected $dbHelper;
+    protected $projectEnvSettings = false;
 
 
     public function __construct(
@@ -31,7 +32,7 @@ class Magento extends AbstractHelper
 
     public function getConfigurations($serviceCode)
     {
-        return (object) $this->readSettings($serviceCode);
+        return (object)$this->readSettings($serviceCode);
     }
 
     protected function readSettings($serviceCode)
@@ -39,13 +40,13 @@ class Magento extends AbstractHelper
         $result = [];
         try {
             $config = $this->getConfig()->asObject();
-            $parser = $this->parser->load($config->project->doc_root.'/'.$config->project->local_config);
+            $parser = $this->getProjectEnvSettings();
             if (!$parser->isLoaded()) {
                 throw new \Exception('Invalid Configuration');
             }
             $result = $parser->getXpathValue(
                 $config->service->$serviceCode->connection->path,
-                (array) $config->service->$serviceCode->connection->map
+                (array)$config->service->$serviceCode->connection->map
             );
         } catch (\Exception $e) {
             throw new \Exception('Invalid Configuration');
@@ -60,5 +61,14 @@ class Magento extends AbstractHelper
         $stmt = $conn->prepare("SELECT value from core_config_data where path = :path and scope_id = :store ");
         $value = $dbHelper->getResultAsValue($stmt, [':store' => $store, ':path' => $path]);
         return $value;
+    }
+
+    protected function getProjectEnvSettings()
+    {
+        if (!$this->projectEnvSettings) {
+            $config = $this->getConfig()->asObject();
+            $this->projectEnvSettings = $this->parser->load($config->project->doc_root . '/' . $config->project->local_config);
+        }
+        return $this->projectEnvSettings;
     }
 }

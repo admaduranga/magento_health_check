@@ -6,6 +6,7 @@ class Monitor
     protected $service;
     protected $env;
     protected $config;
+    protected $messages;
 
     /**
      * @param bool $config
@@ -45,13 +46,12 @@ class Monitor
             if ($serviceClass) {
                 $service = new $serviceClass($serviceCode, $this->getConfig());
                 if (!$service instanceof \Classes\Generic\AbstractService) {
-                    throw new \Exception('No Service Class Found. Please Specify in the Settings');
+                    $this->failHealthCheck('No Service Class Found. Please Specify in the Settings');
                 }
             }
         } catch (\Exception $e) {
-            throw new \Exception('Cannot initiate Service:'.$e->getMessage());
+            $this->failHealthCheck($e->getMessage());
         }
-
         /** var $service \Classes\Generic\AbstractService */
         return $service;
     }
@@ -71,15 +71,36 @@ class Monitor
 
             foreach ($config->service as $code => $service) {
                 if ($service->status) {
+                    $status = $this->initService($code)->checkService();
+                    if (!$status) {
+                        $this->failHealthCheck("service $code failed");
+                    }
                     $result[$code] = $this->initService($code)->checkService();
                 }
             }
             return $result;
         } catch (\Exception $e) {
-            echo json_encode(['status' => '500', 'msg' => $e->getMessage()]);
-            http_response_code(500);
+            $this->failHealthCheck($e->getMessage());
         }
+    }
 
+    public function addMessage($message, $key = '')
+    {
+        if (empty($key)) {
+            $this->messages[] = $message;
+            return true;
+        }
+        $this->messages[$key] = $message;
+    }
 
+    public function getMessages()
+    {
+        return $this->messages;
+    }
+
+    protected function failHealthCheck($msg)
+    {
+        $this->addMessage($msg);
+        http_response_code(500);
     }
 }

@@ -32,6 +32,7 @@ if ($config) {
     // *** ALL GOOD - RUN THE APPLICATION ***
     $monitor = new Monitor();
     echo print_r($monitor->init($config)->healthCheck(), true);
+    echo json_encode($monitor->getMessages());
 } else {
     http_response_code(500);
     echo 'wrong configuration file';
