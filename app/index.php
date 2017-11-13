@@ -4,7 +4,7 @@ define("WORKING_DIR", getcwd().'/');
 define("APP_ROOT", __DIR__.'/');
 
 define("DS", '/');
-define('VERSION', '0.0.1 beta');
+define('VERSION', '0.0.3 beta');
 use Classes\Monitor;
 
 if (!empty($argv[1]) && $argv[1] == 'version') {
