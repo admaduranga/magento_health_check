@@ -1,2 +1,2 @@
 <?php
-require "build/ns-app-monitor.phar";
+require "build/dms-health-check.phar";

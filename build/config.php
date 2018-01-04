@@ -2,8 +2,7 @@
 //Environment configurations
 return [
     'project' => [
-        //'doc_root' => '/var/www/html/docker/nsweb/m1141_ee',
-        'doc_root' => '/var/www/html/camila/codepool',
+        'doc_root' => '/var/www/html/your_docroot',
         'local_config' => 'app/etc/local.xml',
         'main_config' => 'config_m1.php'
     ],
