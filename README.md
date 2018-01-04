@@ -1,6 +1,6 @@
 # Health Check For Magento
 
-This is a standalone php application packaged as a phar file that can be installed in Magento applicatoin servers. When a  health check pulse (for example, called from the load balancer (LB). This application will iterate through the enabled services (using a config.php) and check if all services are up and running 
+This is a standalone php application packaged as a phar file that can be installed in Magento applicatoin servers. When a  health check pulse (for example, called from the load balancer (ELB). This application will iterate through the enabled services (using a config.php) and check if all services are up and running 
 
 ## Getting Started
 
@@ -9,70 +9,68 @@ These instructions can be used to setup the health check application on the serv
 
 ### Installing
 
-Download the 
-
+- Download the build directory or below listed files and place it in appropriate project location
+    - dms-health-check.phar
+    - config.php
+- Copy the `run.php` to a project root or sub directory that can be accessed by ELB
+- Edit the `run.php` and chang
+e the path to the `dms-health-check.phar`
+```php
+<?php
+//** example run.php */
+require "[DOC_ROOT]/health-check/dms-health-check.phar";
 ```
-Give the example
+- Turn on the available services using `config.php`
+```php
+<?php
+//Environment configurations
+return [
+    'project' => [
+        'doc_root' => '/var/www/html/your_docroot',
+        'local_config' => 'app/etc/local.xml',
+        'main_config' => 'config_m1.php'
+    ],
+    'service' =>
+        [
+            'internal-mysql-database'   => ['status' => 1],
+            'internal-redis-cache'      => ['status' => 1],
+            'internal-redis-fpc'        => ['status' => 1],
+            'internal-memcache-session' => ['status' => 1],
+            'internal-nfs-media'        => ['status' => 1],
+            'internal-nfs-var'          => ['status' => 1],
+            'internal-solr-search'      => ['status' => 0],
+        ]
+];
 ```
-
-And repeat
-
+- If you are using an Magento 1.x project please use 
+```php 
+'main_config' => 'config_m1.php'
 ```
-until finished
+- For Magento 2.x projects please use 
+```php 
+'main_config' => 'config_m2.php'
 ```
-
-End with an example of getting some data out of the system or using it for a little demo
 
 ## Running the tests
 
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
+Let the ELB call the run.php or using terminal
+```text
+> php run.php
 ```
-Give an example
-```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-## Deployment
-
-Add additional notes about how to deploy this on a live system
-
-## Built With
-
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
+If all services are good, the HTTP response will be 200 otherwise 500 with error messages.
 
 ## Contributing
 
 Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
 
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
+## Version
+Current version = **`0.0.3 beta`** 
 
 ## Authors
 
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
+* **A. Dilhan Maduranga** - [Bit Bucket Project](https://bitbucket.org/dilhan_maduranga/)
 
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-## Acknowledgments
-
-* Hat tip to anyone who's code was used
-* Inspiration
-* etc
+## Improvements
+- Magento 2.x version of this project is still under testing
+- Revise each Service class to improve the availability criteria
+ 
